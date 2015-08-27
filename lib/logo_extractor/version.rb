@@ -1,0 +1,3 @@
+module LogoExtractor
+  VERSION = "0.0.1"
+end
