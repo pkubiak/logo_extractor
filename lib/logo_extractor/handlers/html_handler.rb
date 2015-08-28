@@ -27,6 +27,7 @@ module LogoExtractor
         attr_weights = {
           :class => 5,
           :src => 10,
+          :id => 10,
           :title => 1,
           :alt => 1
         }
@@ -71,6 +72,13 @@ module LogoExtractor
           #TODO: blacklisting
           
           #TODO: scoring based on parent a href
+          if img.parent.name == 'a' and img.parent.attr('href') then
+            puts img.parent.attr('href')
+            href = URI(img.parent.attr('href'))
+            if ['', '/', 'index.php', 'index.html', 'index.htm', 'index.aspx'].include? href.path then
+              score += weights[:parent] 
+            end
+          end
           
           #scoring based of anncestor class name
           i = img.parent
@@ -98,15 +106,11 @@ module LogoExtractor
                  
           #TODO: scoring based on size
           
-          
-          
           [score, src]
         end  
         
-
-        
         # remove 0 scored imgs
-        imgs = imgs.compact.select { |x| x[0] > 0 }
+        imgs = imgs.compact.select{ |x| x[0] > 0 }
         
         # sort in descending score order
         imgs.sort_by!{|x| -x[0]}
