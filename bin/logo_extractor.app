@@ -7,8 +7,6 @@ require 'tempfile'
 require "logo_extractor"
 
 
-puts ARGV
-puts ARGV.length
 if ARGV.length > 1 then
 
   f = Tempfile.new('logo_extractor')
@@ -27,7 +25,12 @@ if ARGV.length > 1 then
   f.close
   exec('chromium "'+f.path+'"')
 else
-  logo = LogoExtractor.extract(ARGV[0]).first
+  logo = LogoExtractor.extract(ARGV[0])
+  logo.each do |l|
+    puts l[0].to_s.rjust(8)+' '+l[1]
+  end
+  
+  logo = logo.first
   if logo then
     exec('display "'+logo[1]+'"')
   end
