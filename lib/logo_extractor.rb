@@ -7,7 +7,7 @@ module LogoExtractor
     url = URI.escape(url)
     @handlers ||= {}
     if handler == :all then
-      @handlers.flat_map{ |k,v| if v then v.call(url) else nil end }.compact
+      @handlers.flat_map{ |k,v| if v then v.call(url) else nil end }.compact.sort_by{ |x| -x[0] }
     elsif @handlers[handler] then
       @handlers[handler].call(url)
     else
@@ -26,3 +26,4 @@ module LogoExtractor
 end
 
 require "logo_extractor/handlers/html_handler"
+require "logo_extractor/handlers/css_handler"
