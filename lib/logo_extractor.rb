@@ -1,6 +1,9 @@
 #require "logo_extractor/version"
 
-
+#TODO: handling uri data, e.g. data:image/svg+xml;
+#TODO: normalize scores from different handlers !!!
+#TODO: maybe extractors should share Nokogiri context?
+ 
 module LogoExtractor
 
   def LogoExtractor.extract(url, handler = :all)
@@ -27,3 +30,4 @@ end
 
 require "logo_extractor/handlers/html_handler"
 require "logo_extractor/handlers/css_handler"
+require "logo_extractor/handlers/favicon_handler"
