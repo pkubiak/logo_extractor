@@ -6,9 +6,9 @@ describe 'CssHandler' do
       cases = {
         # simple tests
         'http://stackoverflow.com/' => [[30, "http://cdn.sstatic.net/stackoverflow/img/logo-10m.svg?v=fc0904eba1b1"], [10, "http://cdn.sstatic.net/stackoverflow/img/sprites.svg?v=1bc768be1b3c"]],
-        'http://www.google.com/' => [],
         
-        # need test with base
+        # google require support for inline styles
+        'http://www.google.com/' => [],
       }
     
       cases.each do |k,v|
