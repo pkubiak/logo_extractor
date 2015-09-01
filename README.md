@@ -18,6 +18,14 @@ Or install it yourself as:
 
     $ gem install logo_extractor
 
+
+## Global TODO
+- [ ] Rewrite rspec tests
+- [ ] Describe dependencies in gem config
+- [ ] Write gemspec
+- [ ] Add OptionParser support to logo_extractor.app
+
+
 ## Usage
 
 Simply execute:
