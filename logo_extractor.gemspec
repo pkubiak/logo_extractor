@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = LogoExtractor::VERSION
   spec.authors       = ["pkubiak"]
   spec.email         = ["solmyrmag@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
+  spec.summary       = 'Gem for extracting logo from given url'
   spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/pkubiak/logo_extractor"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -20,4 +20,10 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
+  
+  spec.add_runtime_dependency 'css_parser'
+  spec.add_runtime_dependency 'nokogiri'
+  spec.add_runtime_dependency 'open-uri'
+  spec.add_runtime_dependency 'open_uri_redirections'
+  spec.add_runtime_dependency 'tempfile'
 end
