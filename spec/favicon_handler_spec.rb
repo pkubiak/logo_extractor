@@ -15,7 +15,7 @@ describe 'FaviconHandler' do
       }
     
       cases.each do |k,v|
-        expect(LogoExtractor.extract(k, 'favicon')).to eq v      
+        expect(LogoExtractor.extract_all(k, 'favicon')).to eq v      
       end
     end
   

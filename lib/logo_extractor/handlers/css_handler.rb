@@ -10,6 +10,7 @@ require 'css_parser'
 #TODO: add point for how far from begining of document element is
 #TODO: Parse style tags
 #TODO: Parse inline styles
+#TODO: extract logos with offset & size eg. as facebook.com
 
 # Simply extractor which try to find logo in img tag
 # return array of uri

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'HtmlHandler' do
-  describe '#extract' do
+  describe '#extract_all' do
     it 'extract logos using html handler' do
       cases = {
         # simple tests
@@ -17,9 +17,8 @@ describe 'HtmlHandler' do
       }
     
       cases.each do |k,v|
-        expect(LogoExtractor.extract(k, 'html-img')).to eq v      
+        expect(LogoExtractor.extract_all(k, 'html-img')).to eq v      
       end
     end
-  
   end
 end

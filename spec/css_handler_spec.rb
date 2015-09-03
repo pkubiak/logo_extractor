@@ -12,7 +12,7 @@ describe 'CssHandler' do
       }
     
       cases.each do |k,v|
-        expect(LogoExtractor.extract(k, 'css')).to eq v      
+        expect(LogoExtractor.extract_all(k, 'css')).to eq v      
       end
     end
   

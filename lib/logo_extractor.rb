@@ -3,18 +3,28 @@
 #TODO: handling uri data, e.g. data:image/svg+xml;
 #TODO: normalize scores from different handlers !!!
 #TODO: maybe extractors should share Nokogiri context?
- 
+#TODO: add option to extract pure image logo eg. via data-uri
+#TODO: distinguish extract_url -> url & extract -> image
+
 module LogoExtractor
 
-  def LogoExtractor.extract(url, handler = :all)
+  def LogoExtractor.extract_all(url, handler = :all)
     url = URI.escape(url)
     @handlers ||= {}
     if handler == :all then
-      @handlers.flat_map{ |k,v| if v then v.call(url) else nil end }.compact.sort_by{ |x| -x[0] }
+      x = @handlers.flat_map{ |k,v| if v then v.call(url) else nil end }.compact.sort_by{ |x| -x[0] }
     elsif @handlers[handler] then
       @handlers[handler].call(url)
     else
       nil
+    end
+  end
+  
+  # Extract only this link which should be interpreted as logo
+  def LogoExtractor.extract(url)
+    x = LogoExtractor.extract_all(url).first
+    if x then
+      x[1]
     end
   end
   
