@@ -18,6 +18,22 @@ describe 'FaviconHandler' do
         expect(LogoExtractor.extract_all(k, 'favicon')).to eq v      
       end
     end
+  end
   
+  describe '#extract_ico_file' do
+    it 'should extract multiple pngs' do
+      url = 'http://fortawesome.github.io/Font-Awesome/assets/ico/favicon.ico'
+      icons = LogoExtractor::Handlers::FaviconHandler.extract_ico_file(url)
+      
+      expect(icons.length).to eq 4
+    end
+  
+    it 'should return original url in case there is only one layer' do
+      url = 'http://rozklad-pkp.pl/favicon.ico'
+      icons = LogoExtractor::Handlers::FaviconHandler.extract_ico_file(url)
+      
+      expect(icons).to eq [url]
+    end
+    
   end
 end

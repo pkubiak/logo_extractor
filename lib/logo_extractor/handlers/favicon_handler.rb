@@ -2,14 +2,51 @@ require 'nokogiri'
 require 'open-uri'
 require 'open_uri_redirections'
 require 'css_parser'
+require 'tmpdir'
+require 'tempfile'
+require 'base64'
 
 # Extractor for favicon with rating based on icon size
 # ! there is probably not false results
 
 #TODO: relative paths
+#TODO: when image type is ico, extract each layer separately
 module LogoExtractor
   module Handlers
     class FaviconHandler
+      #CONVERTER = !system('convert --version').nil?
+      
+      def FaviconHandler.extract_ico_file(path)
+        pwd = Dir.pwd
+        begin
+          Dir.mktmpdir do |dir|
+            # load remote icon to local tmp file
+            f = Tempfile.new(['logo_extractor','.ico'], dir)
+            f.puts(open(path).read)
+            f.close
+            
+            Dir.chdir dir
+            
+            # convert ico to png/pngs
+            cmd = "convert #{f.path} ./output.png"
+            puts cmd
+            system(cmd)
+            
+            #scan directory for 'output.png' or 'output-[0-9]+.png'
+            if Dir.glob('output*.png').length > 1 then
+              return Dir.glob('output*.png').map do |out|
+                ['data:image/png;base64,',Base64.strict_encode64(open(out).read)].join
+              end
+            else
+              #In case when there is only single file, return original url
+              return [path]
+            end
+          end
+        ensure
+          Dir.chdir pwd #return to original path
+        end
+      end
+      
       LogoExtractor.register_handler 'favicon' do |url|
         doc = Nokogiri::HTML(open(url, :allow_redirections => :all))
         
