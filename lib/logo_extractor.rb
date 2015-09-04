@@ -5,7 +5,9 @@
 #TODO: maybe extractors should share Nokogiri context?
 #TODO: add option to extract pure image logo eg. via data-uri
 #TODO: distinguish extract_url -> url & extract -> image
-
+#TODO: add progressiv handler execution (next only if first doesnt return good results)
+#TODO: handle cookies, e.g. uj.edu.pl
+#TODO: add points for SVG
 module LogoExtractor
 
   def LogoExtractor.extract_all(url, handler = :all)
