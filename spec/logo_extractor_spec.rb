@@ -22,11 +22,13 @@ describe 'LogoExtractor' do
       'http://mnsprzetargi.pl/' => 'http://mnsprzetargi.pl/logo.png',
       'https://www.python.org/' => 'https://www.python.org/static/img/python-logo.png',
       'http://www.viessmann.pl/' => 'http://www.viessmann.pl/content/dam/internet-global/images/general/7590.gif',
-      'http://facebook.com/' => nil, #url cant by extracted
+      'http://facebook.com/' => nil, #url cant by extracted its a part of bigger file
       'https://www.google.com/' => 'https://www.google.pl/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
       'http://stackoverflow.com/' => 'http://cdn.sstatic.net/stackoverflow/img/logo-10m.svg?v=fc0904eba1b1',
       #'http://www.github.com/' => '', #logo as font glyph
       'http://www.uj.edu.pl/' => 'http://www.uj.edu.pl/uj-lift-theme/images/logotypes/uj-pl.svg',
+      'http://www.8lo.pl/' => 'http://8lo.pl/wp-content/themes/8LO/img/pik.png',
+      'http://fortawesome.github.io/Font-Awesome/' => nil, #there are multiple files in ico
     }
     
     cases.each do |k,v|
