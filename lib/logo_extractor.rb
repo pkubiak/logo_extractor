@@ -8,6 +8,8 @@
 #TODO: add progressiv handler execution (next only if first doesnt return good results)
 #TODO: handle cookies, e.g. uj.edu.pl
 #TODO: add points for SVG
+
+
 module LogoExtractor
 
   def LogoExtractor.extract_all(url, handler = :all)
@@ -40,6 +42,7 @@ module LogoExtractor
   end
 end
 
+#Include available handlers
 require "logo_extractor/handlers/html_handler"
 require "logo_extractor/handlers/css_handler"
 require "logo_extractor/handlers/favicon_handler"
