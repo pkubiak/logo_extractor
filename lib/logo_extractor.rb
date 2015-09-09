@@ -1,15 +1,9 @@
 #require "logo_extractor/version"
 
 #TODO: handling uri data, e.g. data:image/svg+xml;
-#TODO: normalize scores from different handlers !!!
-#TODO: maybe extractors should share Nokogiri context?
-#TODO: add option to extract pure image logo eg. via data-uri
 #TODO: distinguish extract_url -> url & extract -> image
 #TODO: add progressiv handler execution (next only if first doesnt return good results)
-#TODO: handle cookies, e.g. uj.edu.pl
 #TODO: add points for SVG
-
-
 module LogoExtractor
 
   def LogoExtractor.extract_all(url, handler = :all)
@@ -23,7 +17,7 @@ module LogoExtractor
       nil
     end
   end
-  
+
   # Extract only this link which should be interpreted as logo
   def LogoExtractor.extract(url)
     x = LogoExtractor.extract_all(url).first
@@ -31,12 +25,12 @@ module LogoExtractor
       x[1]
     end
   end
-  
+
   def LogoExtractor.register_handler(name, &block)
     @handlers ||= {}
     @handlers[name] = block
   end
-  
+
   def LogoExtractor.handlers
     return @handlers.keys
   end
