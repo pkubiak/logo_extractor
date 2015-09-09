@@ -1,4 +1,6 @@
 require 'simplecov'
+require 'digest'
+
 SimpleCov.start
 
 require_relative '../lib/logo_extractor'
@@ -99,4 +101,26 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+end
+
+# Helper for testing many cases (with support for md5)
+def expect_cases(cases, &block)
+  cases.each do |k,v|
+    it "extract logo url from: #{k}" do
+      res = block.call(k)
+
+      # Test if list has the same length
+      expect(res.length).to eq v.length
+
+      res.each_with_index.map do |val, i|
+        if v[i][1].start_with? 'md5:' then
+          val[1] = 'md5:' + Digest::MD5.hexdigest(val[1])
+        end
+        val
+      end
+
+      # Test values
+      expect(res).to eq v
+    end
+  end
 end
