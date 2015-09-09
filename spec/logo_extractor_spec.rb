@@ -4,19 +4,19 @@ describe 'LogoExtractor' do
   describe '#register_extractor' do
     it 'handler registration works' do
       test_url = 'http://www.google.com'
-      
+
       LogoExtractor.register_handler 'copy' do |url|
         [[0, url]]
       end
-      
+
       expect(LogoExtractor.extract_all(test_url,'copy')).to eq [[0, test_url]]
     end
-    
+
     it 'html_handler should be registrated' do
-      expect(LogoExtractor.handlers).to include('html-img')    
+      expect(LogoExtractor.handlers).to include('html-img')
     end
   end
-  
+
   describe '#extract_url' do
     cases = {
       'http://mnsprzetargi.pl/' => 'http://mnsprzetargi.pl/logo.png',
@@ -29,8 +29,10 @@ describe 'LogoExtractor' do
       'http://www.uj.edu.pl/' => 'http://www.uj.edu.pl/uj-lift-theme/images/logotypes/uj-pl.svg',
       'http://www.8lo.pl/' => 'http://8lo.pl/wp-content/themes/8LO/img/pik.png',
       'http://fortawesome.github.io/Font-Awesome/' => nil, #there are multiple files in ico
+      'http://mnslab.pl/' => 'http://mnslab.pl/img/logo_smaller.png',
+      'http://rozklad-pkp.pl/' => 'http://rozklad-pkp.pl/img/header/logo.png',
     }
-    
+
     cases.each do |k,v|
       it "extract logo url from: #{k}" do
         expect(LogoExtractor.extract(k)).to eq v
