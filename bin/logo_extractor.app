@@ -19,7 +19,7 @@ if ARGV.length > 1 then
     f << (logo ? "<img src='#{logo}' />" : "")
     f << "</td></tr>"
   end
-  
+
   f << '</table>'
   f << "</body></html>"
   f.close
@@ -27,9 +27,9 @@ if ARGV.length > 1 then
 else
   logo = LogoExtractor.extract_all(ARGV[0])
   logo.each do |l|
-    puts l[0].to_s.rjust(8)+' '+l[1]
+    puts l[0].to_s.rjust(8)+' '+l[1].to_s
   end
-  
+
   logo = logo.first
   if logo then
     exec('display "'+logo[1]+'"')
