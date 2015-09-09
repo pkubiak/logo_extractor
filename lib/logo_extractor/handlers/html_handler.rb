@@ -109,11 +109,6 @@ module LogoExtractor
 
         # remove 0 scored imgs
         imgs = imgs.compact.select{ |x| x[0] > 0 }
-
-        # sort in descending score order
-        imgs.sort_by!{|x| -x[0]}
-
-
       end
     end
   end

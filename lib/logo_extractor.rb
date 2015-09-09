@@ -12,7 +12,7 @@ module LogoExtractor
     if handler == :all then
       x = @handlers.flat_map{ |k,v| if v then v.call(url) else nil end }.compact.sort_by{ |x| -x[0] }
     elsif @handlers[handler] then
-      @handlers[handler].call(url)
+      @handlers[handler].call(url).compact.sort_by{ |x| -x[0] }
     else
       nil
     end
