@@ -38,10 +38,11 @@ module LogoExtractor
               return Dir.glob('output*.png').map do |out|
                 size = {width:0, height: 0}
 
-                Open3.popen2('identify', '-format', '%[fx:w],%[fx:h]', out) do |_,o,_|
-                  o = o.read.split(',')
-                  size = {width: o[0].to_i, height: o[1].to_i}
-                end
+                o, _ = Open3.capture2('identify', '-format', '%[fx:w],%[fx:h]', out)
+
+                o = o.split(',')
+
+                size = {width: o[0].to_i, height: o[1].to_i}
 
                 [['data:image/png;base64,', Base64.strict_encode64(open(out).read)].join, size, 20]
               end
@@ -59,14 +60,14 @@ module LogoExtractor
       def FaviconHandler.calculate_missing_sizes(data)
         data.map do |row|
           unless row[1] then
-            f = Tempfile.new('logo_extractor')
+            f = Tempfile.new(['logo_extractor',File.extname(URI.parse(row[0]).path)])
             f.write(open(row[0]).read)
             f.close
 
-            Open3.popen2('identify', '-format', '%[fx:w],%[fx:h]', f.path) do |_,out,_|
-              out = out.read.split(',')
-              row[1] = {width: out[0].to_i, height: out[1].to_i}
-            end
+
+            out, _ = Open3.capture2('identify', '-format', '%[fx:w],%[fx:h]', f.path)
+            out = out.split(',')
+            row[1] = {width: out[0].to_i, height: out[1].to_i}
 
             f.unlink
           end
