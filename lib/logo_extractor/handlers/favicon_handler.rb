@@ -60,6 +60,7 @@ module LogoExtractor
       def FaviconHandler.calculate_missing_sizes(data)
         data.map do |row|
           unless row[1] then
+            puts row[0]
             f = Tempfile.new(['logo_extractor',File.extname(URI.parse(row[0]).path)])
             f.write(open(row[0]).read)
             f.close
@@ -92,7 +93,7 @@ module LogoExtractor
         begin
           path = URI.join(URI(url), URI('/favicon.ico'))
           open(path)
-          results+=FaviconHandler.extract_ico_layers(path)
+          results+=FaviconHandler.extract_ico_layers(path.to_s)
         rescue
           # Do nothing
         end
