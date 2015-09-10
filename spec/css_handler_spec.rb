@@ -12,11 +12,8 @@ describe 'CssHandler' do
       'http://mnslab.pl/' => [[100, "http://mnslab.pl/img/logo_smaller.png"], [60, "http://mnslab.pl/img/header-bg.jpg"]]
     }
 
-
-    cases.each do |k,v|
-      it "extract logo url from: #{k}" do
-        expect(LogoExtractor.extract_all(k, 'css')).to eq v
-      end
+    expect_cases cases do |url|
+      LogoExtractor.extract_all(url, 'css')
     end
   end
 end

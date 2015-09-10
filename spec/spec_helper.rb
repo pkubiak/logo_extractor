@@ -113,7 +113,7 @@ def expect_cases(cases, &block)
       expect(res.length).to eq v.length
 
       res.each_with_index.map do |val, i|
-        if v[i][1].start_with? 'md5:' then
+        if v[i][1].start_with? 'md5:' or val[1].start_with? 'data:' then
           val[1] = 'md5:' + Digest::MD5.hexdigest(val[1])
         end
         val
