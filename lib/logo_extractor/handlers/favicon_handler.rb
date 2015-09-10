@@ -31,7 +31,7 @@ module LogoExtractor
             Dir.chdir dir
 
             # convert ico to png/pngs
-            system("convert #{f.path} ./output.png")
+            Open3.capture2('convert', f.path, '-strip', './output.png')
 
             #scan directory for 'output.png' or 'output-[0-9]+.png'
             if Dir.glob('output*.png').length > 1 then
@@ -60,7 +60,6 @@ module LogoExtractor
       def FaviconHandler.calculate_missing_sizes(data)
         data.map do |row|
           unless row[1] then
-            puts row[0]
             f = Tempfile.new(['logo_extractor',File.extname(URI.parse(row[0]).path)])
             f.write(open(row[0]).read)
             f.close
