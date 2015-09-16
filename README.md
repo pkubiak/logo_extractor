@@ -4,20 +4,21 @@ Gem for extracting logo from given url.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Provisionally only by github.
 
-```ruby
-gem 'logo_extractor'
-```
 
-And then execute:
+    $ git clone https://github.com/pkubiak/logo_extractor.git
+    $ cd logo_extractor
+    $ gem build logo_extractor.gemspec
+    $ gem install logo_extractor-0.0.1.gem
 
-    $ bundle
+or as unprivileged user:
 
-Or install it yourself as:
+    $ gem install --user-install logo_extractor-0.0.1.gem
 
-    $ gem install logo_extractor
+Then if you have ruby in your PATH (otherwise by digging into your gems directory):
 
+    $ logo_extractor.app URL
 
 ## Global TODO
 - [ ] Rewrite rspec tests
