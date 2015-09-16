@@ -25,7 +25,5 @@ Gem::Specification.new do |spec|
   
   spec.add_runtime_dependency 'css_parser'
   spec.add_runtime_dependency 'nokogiri'
-  spec.add_runtime_dependency 'open-uri'
   spec.add_runtime_dependency 'open_uri_redirections'
-  spec.add_runtime_dependency 'tempfile'
 end
