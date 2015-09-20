@@ -7,7 +7,9 @@ require 'open_uri_redirections'
 module LogoExtractor
   module Handlers
     class HtmlHandler
-      LogoExtractor.register_handler 'html-img' do |url|
+      CRITERIONS = LogoExtractor::FORMAT_CRITERIONS + LogoExtractor::KEYWORDS_CRITERIONS + [:keyword_in_anncestor, :parents_anchor]
+      
+      LogoExtractor.register_handler 'html-img', CRITERIONS do |url|
         doc = Nokogiri::HTML(open(url, :allow_redirections => :all))
 
         #determine base url
@@ -16,41 +18,29 @@ module LogoExtractor
           base = url.attr('href') || base
         end
 
-        # how much each criterion is worth
-        weights = {
-          :attr => 100,
-          :parent => 100,
-          :class => 60,
-          :size => 20,
-          :ext => 20,
-        }
-
-        attr_weights = {
-          :class => 5,
-          :src => 10,
-          :id => 10,
-          :title => 1,
-          :alt => 1
+        attr_weight = {
+          :class => :keyword_in_class,
+          :src => :keyword_in_src,
+          :id => :keyword_in_id,
+          :title => :keyword_in_title,
+          :alt => :keyword_in_alt,
         }
 
         ext_weight = {
-          '.svg' => 100,
-          '.png' => 80,
-          '.jpg' => 50,
-          '.gif' => 50,
-          '.jpeg' => 50,
-          '.bmp' => 10,
+          '.svg' => :is_svg,
+          '.png' => :is_png,
+          '.jpg' => :is_jpg,
+          '.gif' => :is_gif,
+          '.jpeg' => :is_jpg,
+          '.bmp' => :is_bmp,
         }
 
-        keywords = {
-          'logo' => 10,
-          'logos' => -5,
-        #  'logotyp' => 4,
-        }
+        keywords = LogoExtractor::KEYWORDS
 
 
         imgs = doc.css('img').map do |img|
-          score = 0
+          #score = 0
+          criterions = {}
 
           src = img.attr('src')
           next nil unless src
@@ -60,55 +50,48 @@ module LogoExtractor
 
 
           # find keyword in img attributes and compute total score of this img
-          attr_score = 0
-          attr_weights.each do |attrib, weight|
+          attr_weight.each do |attrib, weight|
             keywords.each do |keyword, value|
-              if img.attr(attrib) and img.attr(attrib).downcase.include? keyword then
-                attr_score += weight*value
+              if img.attr(attrib) and img.attr(attrib).downcase.include? keyword.downcase then
+                #attr_score += weight*value
+                #TODO: Should we sum scores for multiple keywords or max them?
+                criterions[weight] = [criterions[weight] || 0, value].max 
               end
             end
           end
-          score = weights[:attr]*attr_score/200 # use 200 as max value for attr_score
-
+          
           # scoring based on parent a href
           if img.parent.name == 'a' and img.parent.attr('href') then
             #puts img.parent.attr('href')
             href = URI(img.parent.attr('href'))
             if ['', '/', 'index.php', 'index.html', 'index.htm', 'index.aspx'].include? href.path then
-              score += weights[:parent]
+              criterions[:parents_anchor] = 1
             end
           end
 
           # scoring based of anncestor class name&id
           i = img.parent
-          class_score = 0
           while i.name != 'document' do
             keywords.each do |keyword, value|
               if ((i.attr('class') || '')+' '+(i.attr('id') || '')).downcase.include? keyword then
-                class_score = [class_score, value*6/i.css('img').length].max
+                #class_score = [class_score, value*6/i.css('img').length].max
+                criterions[:keyword_in_anncestor] = [criterions[:keyword_in_anncestor]||0, value].max
               end
             end
             i = i.parent
           end
-          score += [class_score, weights[:class]].min
-
 
           # test below only run if img has already received some points
-          next nil if score <= 0
-
+          next nil if criterions.empty?
 
           #scoring based on file type
           ext = File.extname(img.attr('src') || '').downcase
           if ext_weight[ext] then
-            score += weights[:ext]*ext_weight[ext]/100
+            criterions[ext_weight[ext]] = 1
           end
 
-
-          [score, src]
+          [criterions, src]
         end
-
-        # remove 0 scored imgs
-        imgs = imgs.compact.select{ |x| x[0] > 0 }
       end
     end
   end

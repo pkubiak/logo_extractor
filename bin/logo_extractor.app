@@ -27,7 +27,7 @@ if ARGV.length > 1 then
 else
   logo = LogoExtractor.extract_all(ARGV[0])
   logo.each do |l|
-    puts l[0].to_s.rjust(8)+' '+l[1].to_s
+    puts l[0].to_s.rjust(8)+' '+l[1].to_s+"\t"+l[2].to_s
   end
 
   logo = logo.first

@@ -5,17 +5,31 @@
 #TODO: add progressiv handler execution (next only if first doesnt return good results)
 #TODO: add points for SVG
 module LogoExtractor
-
+  FORMAT_CRITERIONS = [:is_svg, :is_png, :is_jpg, :is_gif, :is_bmp]
+  KEYWORDS_CRITERIONS = [:keyword_in_class, :keyword_in_alt, :keyword_in_title, :keyword_in_src, :keyword_in_id]
+  
+  KEYWORDS = {
+    'logo' => 10,
+    'logos' => -5,
+  }
+  
+  #TODO: implement
+  def LogoExtractor.score(criterions)
+    return 0
+  end
+  
   def LogoExtractor.extract_all(url, handler = :all)
     url = URI.escape(url)
     @handlers ||= {}
-    if handler == :all then
-      x = @handlers.flat_map{ |k,v| if v then v.call(url) else nil end }.compact.sort_by{ |x| -x[0] }
+    result = if handler == :all then
+      x = @handlers.flat_map{ |k,v| if v then v.call(url) else nil end }.compact
     elsif @handlers[handler] then
-      @handlers[handler].call(url).compact.sort_by{ |x| -x[0] }
+      @handlers[handler].call(url).compact
     else
-      nil
+      []
     end
+    
+    result.map{|crit, url| [score(crit), url, crit]}.sort_by{|x| x[0]}
   end
 
   # Extract only this link which should be interpreted as logo
@@ -26,7 +40,7 @@ module LogoExtractor
     end
   end
 
-  def LogoExtractor.register_handler(name, &block)
+  def LogoExtractor.register_handler(name, criterions, &block)
     @handlers ||= {}
     @handlers[name] = block
   end
@@ -38,5 +52,5 @@ end
 
 #Include available handlers
 require "logo_extractor/handlers/html_handler"
-require "logo_extractor/handlers/css_handler"
-require "logo_extractor/handlers/favicon_handler"
+#require "logo_extractor/handlers/css_handler"
+#require "logo_extractor/handlers/favicon_handler"
