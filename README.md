@@ -1,4 +1,4 @@
-# LogoExtractor
+# LogoExtractor [![Code Climate](https://codeclimate.com/github/pkubiak/logo_extractor/badges/gpa.svg)](https://codeclimate.com/github/pkubiak/logo_extractor) [![Test Coverage](https://codeclimate.com/github/pkubiak/logo_extractor/badges/coverage.svg)](https://codeclimate.com/github/pkubiak/logo_extractor/coverage)
 
 Gem for extracting logo from given url.
 
